@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import AddItem from './components/AddItem';
+import ToDoList from './components/ToDoList';
+import './styles.css';
 
-function App() {
+export default function App() {
+  const [todoItems, setToDoItems] = useState([]);
+  const [text, setText] = useState('');
+  const [currentKey, setCurrentKey] = useState(0);
+
+  const handleAddItem = () => {
+    setCurrentKey(currentKey + 1);
+    
+    setToDoItems([
+      ...todoItems, 
+      {key: currentKey, text: text}
+    ]);
+  }
+
+  const handleDeleteItem = (itemKey) => {
+    setToDoItems(todoItems.filter(items => items.key !== itemKey));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <AddItem handleAddItem={handleAddItem} text={text} setText={setText} />
+      <ToDoList toDoListItems={todoItems} handleDeleteItem={handleDeleteItem}/>
     </div>
   );
 }
-
-export default App;
